@@ -2,12 +2,10 @@ package TransportesYIYO.seguimiento.models.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import java.util.List;
 
 @Entity
 @Table(name = "camiones")
-public class Camion {
+public class Camiones {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -21,18 +19,8 @@ public class Camion {
     @NotBlank
     private String patente;
 
-    @OneToMany(mappedBy = "camion")
-    private List<Pedido> pedidos;
 
     //GETTER/SETTER
-
-    public List<Pedido> getPedidos() {
-        return pedidos;
-    }
-
-    public void setPedidos(List<Pedido> pedidos) {
-        this.pedidos = pedidos;
-    }
 
     public String getMarca() {
         return marca;

@@ -3,9 +3,11 @@ package TransportesYIYO.seguimiento.models.services;
 import TransportesYIYO.seguimiento.models.dao.IClientesDAO;
 import TransportesYIYO.seguimiento.models.entities.Clientes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ClientesServiceImpl implements IClientesService{
 
     @Autowired

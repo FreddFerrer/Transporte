@@ -3,9 +3,11 @@ package TransportesYIYO.seguimiento.models.services;
 import TransportesYIYO.seguimiento.models.dao.ICamionDAO;
 import TransportesYIYO.seguimiento.models.entities.Camiones;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CamionServiceImpl implements ICamionService{
 
     @Autowired

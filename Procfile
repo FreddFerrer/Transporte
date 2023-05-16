@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar seguimiento.war
+web: java -Dserver.port=$PORT -war seguimiento.war

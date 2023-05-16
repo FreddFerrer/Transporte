@@ -8,4 +8,6 @@ import java.util.List;
 public interface ICamionService {
     List<Camiones> findAll();
     Camiones save(Camiones camion);
+
+    void delete(Long id);
 }

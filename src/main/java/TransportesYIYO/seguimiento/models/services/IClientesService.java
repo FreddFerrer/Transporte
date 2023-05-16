@@ -9,5 +9,5 @@ public interface IClientesService {
 
     Clientes save (Clientes clientes);
 
-    void delete (Clientes clientes);
+    void deleteById (Long clientes);
 }

@@ -1,5 +1,10 @@
 package TransportesYIYO.seguimiento.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.validator.constraints.UniqueElements;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,13 +18,13 @@ public class Pedidos {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(nullable = false)
-    @NotNull
+    @Column(nullable = false, unique = true)
     @NotBlank
     private String nroPedido;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
+    @JsonBackReference
     private Clientes cliente;
 
     @Column(name = "create_at")
@@ -28,19 +33,36 @@ public class Pedidos {
 
     @Column(name = "fecha_salida")
     @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date fechaSalida;
 
     @Column(name = "fecha_estimada")
     @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date fechaEstimada;
 
     @Column(name = "entregado")
-    @NotBlank
     private boolean entregado;
 
     @Column(name = "estado")
     @NotBlank
     private String estado;
+
+    public Long getClienteId() {
+        return cliente.getId();
+    }
+
+    public String getClienteNombre() {
+        return cliente.getNombre() + " " + cliente.getApellido();
+    }
+
+    //constructores
+
+    @PrePersist
+    public void prePersist() {
+        createAt = new Date();
+    }
+
 
     //GETTER/SETTER
 

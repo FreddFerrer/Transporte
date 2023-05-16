@@ -24,4 +24,10 @@ public class CamionServiceImpl implements ICamionService{
         return camionDAO.save(camion);
     }
 
+    @Override
+    public void delete(Long id) {
+        camionDAO.deleteById(id);
+    }
+
+
 }

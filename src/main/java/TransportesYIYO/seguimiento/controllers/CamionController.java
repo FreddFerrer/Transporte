@@ -2,6 +2,7 @@ package TransportesYIYO.seguimiento.controllers;
 
 import TransportesYIYO.seguimiento.models.entities.Camiones;
 import TransportesYIYO.seguimiento.models.entities.Clientes;
+import TransportesYIYO.seguimiento.models.services.CamionServiceImpl;
 import TransportesYIYO.seguimiento.models.services.ICamionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -40,18 +41,38 @@ public class CamionController {
                 errores.add("El campo '" + err.getField() + "' " + err.getDefaultMessage());
             }
             response.put("errores", errores);
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
         try {
             nuevoCamion = camionService.save(camion);
         } catch (DataAccessException e) {
             response.put("mensaje", "error al realizar el insert a la base de datos");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
         response.put("mensaje", "el camion ha sido creado con exito");
         response.put("camion", nuevoCamion);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/camiones/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+
+        //MANEJO DE ERRORES
+
+        Map<String, Object> response = new HashMap<>();
+
+        try{
+            camionService.delete(id);
+        } catch (DataAccessException e){
+            response.put("mensaje", "Error al borrar el camion de la base de datos");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        response.put("mensaje", "Camion eliminado con exito");
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 }

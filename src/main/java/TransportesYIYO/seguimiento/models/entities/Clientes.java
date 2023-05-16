@@ -1,5 +1,7 @@
 package TransportesYIYO.seguimiento.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -36,7 +38,19 @@ public class Clientes {
     private String email;
 
     @OneToMany(mappedBy = "cliente")
+    @JsonManagedReference
     private List<Pedidos> pedidos = new ArrayList<>();
+
+    //CONSTRUCTORES
+
+    public Clientes() {
+    }
+
+    public Clientes(Long id) {
+        this.id = id;
+    }
+
+
 
     //GETTERS/SETTERS
 

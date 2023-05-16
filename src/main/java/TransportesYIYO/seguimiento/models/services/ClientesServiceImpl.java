@@ -24,7 +24,8 @@ public class ClientesServiceImpl implements IClientesService{
     }
 
     @Override
-    public void delete(Clientes cliente) {
-        clientesDAO.delete(cliente);
+    public void deleteById(Long id) {
+        clientesDAO.deleteById(id);
     }
+
 }

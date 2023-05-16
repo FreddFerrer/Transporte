@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class IPedidosServiceImpl implements IPedidosService{
+public class PedidosServiceImpl implements IPedidosService{
 
     @Autowired
     private IPedidosDAO pedidosDAO;
@@ -24,7 +24,7 @@ public class IPedidosServiceImpl implements IPedidosService{
     }
 
     @Override
-    public void delete(Pedidos pedido) {
-        pedidosDAO.delete(pedido);
+    public void deleteById(Long id) {
+        pedidosDAO.deleteById(id);
     }
 }

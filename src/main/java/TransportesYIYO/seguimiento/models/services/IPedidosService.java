@@ -9,5 +9,5 @@ public interface IPedidosService {
 
     Pedidos save (Pedidos pedidos);
 
-    void delete (Pedidos pedidos);
+    void deleteById (Long id);
 }

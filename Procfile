@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -war seguimiento-0.0.1-SNAPSHOT.war
+web: java -Dserver.port=$PORT -jar target/seguimiento-0.0.1-SNAPSHOT.war

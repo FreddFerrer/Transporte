@@ -1,7 +1,11 @@
 package TransportesYIYO.seguimiento.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "camiones")
@@ -19,8 +23,28 @@ public class Camiones {
     @NotBlank
     private String patente;
 
+    @OneToMany(mappedBy = "camion")
+    private List<Pedidos> pedidos = new ArrayList<>();
+
+    //CONSTRUCTORES
+
+    public Camiones() {
+    }
+
+    public Camiones(Long id) {
+        this.id = id;
+    }
+
 
     //GETTER/SETTER
+    @JsonManagedReference
+    public List<Pedidos> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedidos> pedidos) {
+        this.pedidos = pedidos;
+    }
 
     public String getMarca() {
         return marca;

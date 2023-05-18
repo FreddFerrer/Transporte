@@ -38,7 +38,6 @@ public class Clientes {
     private String email;
 
     @OneToMany(mappedBy = "cliente")
-    @JsonManagedReference
     private List<Pedidos> pedidos = new ArrayList<>();
 
     //CONSTRUCTORES
@@ -94,6 +93,7 @@ public class Clientes {
         this.email = email;
     }
 
+    @JsonManagedReference
     public List<Pedidos> getPedidos() {
         return pedidos;
     }

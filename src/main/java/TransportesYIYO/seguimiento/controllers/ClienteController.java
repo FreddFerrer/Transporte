@@ -12,10 +12,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -27,6 +24,31 @@ public class ClienteController {
     @GetMapping("/clientes")
     public List<Clientes> mostrarClientes() {
         return clientesService.findAll();
+    }
+
+    @GetMapping("/clientes/{id}")
+    public ResponseEntity<?> mostrarCliente(@PathVariable Long id) {
+
+        // MANEJO DE ERRORES
+
+        Optional<Clientes> clienteOptional;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            clienteOptional = clientesService.getClienteById(id);
+        } catch (DataAccessException e) {
+            response.put("mensaje", "error al realizar la consulta a la base de datos");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (clienteOptional.isEmpty()) {
+            response.put("mensaje", "El cliente id: " + id + " no existe en la base de datos");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        Clientes cliente = clienteOptional.get();
+        return new ResponseEntity<>(cliente, HttpStatus.OK);
     }
 
     @PostMapping("/clientes")
@@ -54,6 +76,8 @@ public class ClienteController {
         response.put("cliente", nuevoCliente);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+
 
     @DeleteMapping("/clientes/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){

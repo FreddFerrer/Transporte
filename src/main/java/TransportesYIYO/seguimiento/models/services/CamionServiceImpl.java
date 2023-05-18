@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CamionServiceImpl implements ICamionService{
@@ -22,6 +23,11 @@ public class CamionServiceImpl implements ICamionService{
     @Override
     public Camiones save(Camiones camion) {
         return camionDAO.save(camion);
+    }
+
+    @Override
+    public Optional<Camiones> getCamionById(Long id) {
+        return camionDAO.findById(id);
     }
 
     @Override

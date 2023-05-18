@@ -13,10 +13,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -28,6 +25,31 @@ public class CamionController {
     @GetMapping("/camiones")
     public List<Camiones> mostrarCamiones(){
         return camionService.findAll();
+    }
+
+    @GetMapping("/camiones/{id}")
+    public ResponseEntity<?> mostrarCamion(@PathVariable Long id) {
+
+        // MANEJO DE ERRORES
+
+        Optional<Camiones> camionOptional;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            camionOptional = camionService.getCamionById(id);
+        } catch (DataAccessException e) {
+            response.put("mensaje", "error al realizar la consulta a la base de datos");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (camionOptional.isEmpty()) {
+            response.put("mensaje", "El camion id: " + id + " no existe en la base de datos");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        Camiones camion = camionOptional.get();
+        return new ResponseEntity<>(camion, HttpStatus.OK);
     }
 
     @PostMapping("/camiones")

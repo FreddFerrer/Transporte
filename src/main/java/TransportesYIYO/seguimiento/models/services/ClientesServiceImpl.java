@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientesServiceImpl implements IClientesService{
@@ -21,6 +22,11 @@ public class ClientesServiceImpl implements IClientesService{
     @Override
     public Clientes save(Clientes cliente) {
         return clientesDAO.save(cliente);
+    }
+
+    @Override
+    public Optional<Clientes> getClienteById(Long id) {
+        return clientesDAO.findById(id);
     }
 
     @Override

@@ -27,6 +27,31 @@ public class PedidoController {
         return pedidosService.findAll();
     }
 
+    @GetMapping("/pedidos/{id}")
+    public ResponseEntity<?> mostrarPedido(@PathVariable Long id) {
+
+        // MANEJO DE ERRORES
+
+        Optional<Pedidos> pedidoOptional;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            pedidoOptional = pedidosService.getPedidosById(id);
+        } catch (DataAccessException e) {
+            response.put("mensaje", "error al realizar la consulta a la base de datos");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (pedidoOptional.isEmpty()) {
+            response.put("mensaje", "El pedido id: " + id + " no existe en la base de datos");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        Pedidos pedido = pedidoOptional.get();
+        return new ResponseEntity<>(pedido, HttpStatus.OK);
+    }
+
     @PostMapping("/pedidos")
     public ResponseEntity<?> create(@Valid @RequestBody Pedidos pedido, BindingResult result) {
         Pedidos nuevoPedido;

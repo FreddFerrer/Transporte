@@ -24,7 +24,6 @@ public class Pedidos {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
-    @JsonBackReference
     private Clientes cliente;
 
     @Column(name = "create_at")
@@ -48,6 +47,13 @@ public class Pedidos {
     @NotBlank
     private String estado;
 
+    @ManyToOne
+    @JoinColumn(name = "camion_id")
+    private Camiones camion;
+
+    public Long getCamionId() {
+        return camion.getId();
+    }
     public Long getClienteId() {
         return cliente.getId();
     }
@@ -56,7 +62,6 @@ public class Pedidos {
         return cliente.getNombre() + " " + cliente.getApellido();
     }
 
-    //constructores
 
     @PrePersist
     public void prePersist() {
@@ -66,6 +71,15 @@ public class Pedidos {
 
     //GETTER/SETTER
 
+    @JsonBackReference
+    public Camiones getCamion() {
+        return camion;
+    }
+
+    public void setCamion(Camiones camion) {
+        this.camion = camion;
+    }
+
     public String getEstado() {
         return estado;
     }
@@ -74,6 +88,7 @@ public class Pedidos {
         return nroPedido;
     }
 
+    @JsonBackReference
     public Clientes getCliente() {
         return cliente;
     }

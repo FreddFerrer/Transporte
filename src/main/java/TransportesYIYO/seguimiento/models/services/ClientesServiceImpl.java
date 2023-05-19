@@ -2,6 +2,7 @@ package TransportesYIYO.seguimiento.models.services;
 
 import TransportesYIYO.seguimiento.models.dao.IClientesDAO;
 import TransportesYIYO.seguimiento.models.entities.Clientes;
+import TransportesYIYO.seguimiento.models.entities.Pedidos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +26,9 @@ public class ClientesServiceImpl implements IClientesService{
     }
 
     @Override
-    public Optional<Clientes> getClienteById(Long id) {
-        return clientesDAO.findById(id);
+    public Clientes getClienteById(Long id) {
+        return clientesDAO.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("El cliente con ID " + id + " no existe"));
     }
 
     @Override

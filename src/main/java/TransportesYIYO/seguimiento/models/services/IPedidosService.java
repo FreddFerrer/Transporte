@@ -10,7 +10,7 @@ public interface IPedidosService {
 
     Pedidos save (Pedidos pedidos);
 
-    Optional<Pedidos> getPedidosById(Long id);
+    Pedidos getPedidosById(Long id);
 
     Integer obtenerUltimoNumeroPedido();
 

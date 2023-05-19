@@ -28,8 +28,9 @@ public class PedidosServiceImpl implements IPedidosService{
     }
 
     @Override
-    public Optional<Pedidos> getPedidosById(Long id) {
-        return pedidosDAO.findById(id);
+    public Pedidos getPedidosById(Long id) {
+        return pedidosDAO.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("El pedido con ID " + id + " no existe"));
     }
 
     @Override

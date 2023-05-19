@@ -10,7 +10,7 @@ public interface IClientesService {
 
     Clientes save (Clientes clientes);
 
-    Optional<Clientes> getClienteById (Long id);
+    Clientes getClienteById (Long id);
 
     void deleteById (Long clientes);
 }

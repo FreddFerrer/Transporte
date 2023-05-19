@@ -32,23 +32,22 @@ public class PedidoController {
 
         // MANEJO DE ERRORES
 
-        Optional<Pedidos> pedidoOptional;
+        Pedidos pedido;
         Map<String, Object> response = new HashMap<>();
 
         try {
-            pedidoOptional = pedidosService.getPedidosById(id);
+            pedido = pedidosService.getPedidosById(id);
         } catch (DataAccessException e) {
             response.put("mensaje", "error al realizar la consulta a la base de datos");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        if (pedidoOptional.isEmpty()) {
+        if (pedido == null) {
             response.put("mensaje", "El pedido id: " + id + " no existe en la base de datos");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
-        Pedidos pedido = pedidoOptional.get();
         return new ResponseEntity<>(pedido, HttpStatus.OK);
     }
 
@@ -81,6 +80,46 @@ public class PedidoController {
         response.put("mensaje", "el pedido ha sido creado con exito");
         response.put("cliente", nuevoPedido);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/pedidos/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Pedidos pedido, BindingResult result) {
+        Pedidos pedidoExistente;
+        pedidoExistente = pedidosService.getPedidosById(id);
+        Map<String, Object> response = new HashMap<>();
+
+        if (pedidoExistente == null) {
+            response.put("mensaje", "El pedido con ID " + id + " no existe");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        if (result.hasErrors()) {
+            List<String> errores = new ArrayList<>();
+            for (FieldError err : result.getFieldErrors()) {
+                errores.add("El campo '" + err.getField() + "' " + err.getDefaultMessage());
+            }
+            response.put("errores", errores);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Actualizar los campos del pedido existente con los valores del pedido recibido
+        pedidoExistente.setCamion(pedido.getCamion());
+        pedidoExistente.setCliente(pedido.getCliente());
+        pedidoExistente.setEntregado(pedido.isEntregado());
+        pedidoExistente.setFechaSalida(pedido.getFechaSalida());
+        pedidoExistente.setFechaEstimada(pedido.getFechaEstimada());
+        pedidoExistente.setDestino(pedidoExistente.getDestino());
+
+        try {
+            Pedidos pedidoActualizado = pedidosService.save(pedidoExistente);
+            response.put("mensaje", "El pedido con ID " + id + " ha sido actualizado con éxito");
+            response.put("pedido", pedidoActualizado);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al actualizar el pedido con ID " + id);
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("/pedidos/{id}")

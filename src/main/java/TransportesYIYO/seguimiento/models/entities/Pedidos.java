@@ -29,6 +29,10 @@ public class Pedidos {
     @Temporal(TemporalType.DATE)
     private Date createAt;
 
+    @Column(nullable = false)
+    @NotBlank(message = "El destino es obligatorio")
+    private String destino;
+
     @Column(name = "fecha_salida")
     @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
@@ -42,9 +46,6 @@ public class Pedidos {
     @Column(name = "entregado")
     private boolean entregado;
 
-    @Column(name = "estado")
-    @NotBlank
-    private String estado;
 
     @JsonBackReference("camion-pedidos")
     @ManyToOne
@@ -73,9 +74,6 @@ public class Pedidos {
         this.camion = camion;
     }
 
-    public String getEstado() {
-        return estado;
-    }
 
     public Integer getNroPedido() {
         return nroPedido;
@@ -118,8 +116,12 @@ public class Pedidos {
         this.entregado = entregado;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public String getDestino() {
+        return destino;
+    }
+
+    public void setDestino(String destino) {
+        this.destino = destino;
     }
 
     public Long getId() {

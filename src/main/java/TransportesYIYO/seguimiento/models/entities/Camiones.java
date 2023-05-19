@@ -24,6 +24,7 @@ public class Camiones {
     private String patente;
 
     @OneToMany(mappedBy = "camion")
+    @JsonManagedReference("camion-pedidos")
     private List<Pedidos> pedidos = new ArrayList<>();
 
     //CONSTRUCTORES

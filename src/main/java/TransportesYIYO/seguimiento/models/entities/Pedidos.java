@@ -19,8 +19,7 @@ public class Pedidos {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    @NotBlank
-    private String nroPedido;
+    private Integer nroPedido;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
@@ -47,16 +46,10 @@ public class Pedidos {
     @NotBlank
     private String estado;
 
+    @JsonBackReference("camion-pedidos")
     @ManyToOne
     @JoinColumn(name = "camion_id")
     private Camiones camion;
-
-    public Long getCamionId() {
-        return camion.getId();
-    }
-    public Long getClienteId() {
-        return cliente.getId();
-    }
 
     public String getClienteNombre() {
         return cliente.getNombre() + " " + cliente.getApellido();
@@ -84,7 +77,7 @@ public class Pedidos {
         return estado;
     }
 
-    public String getNroPedido() {
+    public Integer getNroPedido() {
         return nroPedido;
     }
 
@@ -97,7 +90,7 @@ public class Pedidos {
         this.cliente = cliente;
     }
 
-    public void setNroPedido(String nroPedido) {
+    public void setNroPedido(Integer nroPedido) {
         this.nroPedido = nroPedido;
     }
 
@@ -143,5 +136,13 @@ public class Pedidos {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getCamionId() {
+        return camion.getId();
+    }
+
+    public Long getClienteId() {
+        return cliente.getId();
     }
 }

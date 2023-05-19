@@ -55,6 +55,8 @@ public class PedidoController {
     @PostMapping("/pedidos")
     public ResponseEntity<?> create(@Valid @RequestBody Pedidos pedido, BindingResult result) {
         Pedidos nuevoPedido;
+        Integer ultimoNumeroPedido = pedidosService.obtenerUltimoNumeroPedido();
+        Integer nuevoNumeroPedido = ultimoNumeroPedido + 1;
         Map<String, Object> response = new HashMap<>();
 
         if (result.hasErrors()) {
@@ -65,14 +67,17 @@ public class PedidoController {
             response.put("errores", errores);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
+
+        pedido.setNroPedido(nuevoNumeroPedido); // Asignar el nuevo número de pedido al objeto pedido
+
         try {
             nuevoPedido = pedidosService.save(pedido);
         } catch (DataAccessException e) {
             response.put("mensaje", "error al realizar el insert a la base de datos");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-
         }
+
         response.put("mensaje", "el pedido ha sido creado con exito");
         response.put("cliente", nuevoPedido);
         return new ResponseEntity<>(response, HttpStatus.CREATED);

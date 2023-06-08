@@ -120,6 +120,24 @@ public class PedidoController {
         }
     }
 
+    @PutMapping("/pedidos/{id}/entregado")
+    public ResponseEntity<?> actualizarEstadoEntregado(@PathVariable Long id, @RequestBody boolean entregado) {
+        Pedidos pedidoActualizado;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            pedidoActualizado = pedidosService.actualizarEstadoEntregado(id, entregado);
+        } catch (IllegalArgumentException e) {
+            response.put("mensaje", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        pedidoActualizado.setEntregado(entregado);
+        response.put("mensaje", "El estado 'entregado' del pedido con ID " + id + " ha sido actualizado");
+        response.put("pedido", pedidoActualizado);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @DeleteMapping("/pedidos/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
 

@@ -13,6 +13,6 @@ public interface IPedidosService {
     Pedidos getPedidosById(Long id);
 
     Integer obtenerUltimoNumeroPedido();
-
+    Pedidos actualizarEstadoEntregado(Long id, boolean entregado);
     void deleteById (Long id);
 }

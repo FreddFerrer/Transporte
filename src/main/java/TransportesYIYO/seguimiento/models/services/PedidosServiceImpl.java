@@ -47,4 +47,13 @@ public class PedidosServiceImpl implements IPedidosService{
         Integer ultimoNumeroPedido = (Integer) query.getSingleResult();
         return ultimoNumeroPedido != null ? ultimoNumeroPedido : 99; // Empezar en 100
     }
+
+    @Override
+    public Pedidos actualizarEstadoEntregado(Long id, boolean entregado) {
+        Pedidos pedidoExistente = pedidosDAO.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("El pedido con ID " + id + " no existe"));
+
+        pedidoExistente.setEntregado(entregado);
+        return pedidosDAO.save(pedidoExistente);
+    }
 }

@@ -2,6 +2,7 @@ package TransportesYIYO.seguimiento.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.UniqueElements;
 
@@ -140,8 +141,12 @@ public class Pedidos {
         this.id = id;
     }
 
+    @JsonIgnore
     public Long getCamionId() {
-        return camion.getId();
+        if (id != null) {
+            return camion.getId();
+        }
+        return null;
     }
 
     public Long getClienteId() {

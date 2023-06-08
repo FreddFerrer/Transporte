@@ -142,7 +142,6 @@ public class Pedidos {
     }
 
     @JsonIgnore
-
     public Long getCamionId() {
         if (id != null) {
             return camion.getId();

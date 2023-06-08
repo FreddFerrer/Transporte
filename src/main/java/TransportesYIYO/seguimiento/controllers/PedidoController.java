@@ -83,9 +83,8 @@ public class PedidoController {
     }
 
     @PutMapping("/pedidos/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Pedidos pedido, BindingResult result) {
-        Pedidos pedidoExistente;
-        pedidoExistente = pedidosService.getPedidosById(id);
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Pedidos pedido, BindingResult result) {
+        Pedidos pedidoExistente = pedidosService.getPedidosById(id);
         Map<String, Object> response = new HashMap<>();
 
         if (pedidoExistente == null) {
@@ -106,7 +105,6 @@ public class PedidoController {
         pedidoExistente.setCamion(pedido.getCamion());
         pedidoExistente.setCliente(pedido.getCliente());
         pedidoExistente.setEntregado(pedido.isEntregado());
-        pedidoExistente.setFechaSalida(pedido.getFechaSalida());
         pedidoExistente.setFechaEstimada(pedido.getFechaEstimada());
         pedidoExistente.setDestino(pedidoExistente.getDestino());
 

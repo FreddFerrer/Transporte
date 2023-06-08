@@ -106,7 +106,7 @@ public class PedidoController {
         pedidoExistente.setCliente(pedido.getCliente());
         pedidoExistente.setEntregado(pedido.isEntregado());
         pedidoExistente.setFechaEstimada(pedido.getFechaEstimada());
-        pedidoExistente.setDestino(pedidoExistente.getDestino());
+        pedidoExistente.setDestino(pedido.getDestino());
 
         try {
             Pedidos pedidoActualizado = pedidosService.save(pedidoExistente);

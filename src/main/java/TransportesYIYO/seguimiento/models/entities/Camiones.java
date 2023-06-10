@@ -36,6 +36,10 @@ public class Camiones {
         this.id = id;
     }
 
+    public void eliminarPedido(Pedidos pedido) {
+        pedidos.remove(pedido);
+    }
+
 
     //GETTER/SETTER
     @JsonManagedReference

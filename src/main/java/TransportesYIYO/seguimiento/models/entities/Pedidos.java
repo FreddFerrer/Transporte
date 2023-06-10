@@ -45,7 +45,7 @@ public class Pedidos {
     private Date fechaEstimada;
 
     @Column(name = "entregado")
-    private boolean entregado;
+    private boolean entregado = false;
 
 
     @JsonBackReference("camion-pedidos")
@@ -144,7 +144,7 @@ public class Pedidos {
 
 
     public Long getCamionId() {
-        return camion.getId();
+        return camion != null ? camion.getId() : null;
     }
 
     public Long getClienteId() {

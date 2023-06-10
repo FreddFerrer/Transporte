@@ -64,6 +64,7 @@ public class Pedidos {
     }
 
 
+
     //GETTER/SETTER
 
     @JsonBackReference
@@ -141,12 +142,9 @@ public class Pedidos {
         this.id = id;
     }
 
-    @JsonIgnore
+
     public Long getCamionId() {
-        if (id != null) {
-            return camion.getId();
-        }
-        return null;
+        return camion.getId();
     }
 
     public Long getClienteId() {

@@ -1,15 +1,16 @@
 package TransportesYIYO.seguimiento.models.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "pedidos")
@@ -47,6 +48,10 @@ public class Pedidos {
     @Column(name = "entregado")
     private boolean entregado = false;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EstadoPedidos> estados = new ArrayList<>();
+
 
     @JsonBackReference("camion-pedidos")
     @ManyToOne
@@ -63,9 +68,23 @@ public class Pedidos {
         createAt = new Date();
     }
 
+    public void agregarEstado(EstadoPedidos estado) {
+        estados.add(estado);
+        estado.setFecha(new Date());
+        estado.setPedido(this);
+    }
 
 
     //GETTER/SETTER
+
+
+    public List<EstadoPedidos> getEstados() {
+        return estados;
+    }
+
+    public void setEstados(List<EstadoPedidos> estados) {
+        this.estados = estados;
+    }
 
     @JsonBackReference
     public Camiones getCamion() {

@@ -17,8 +17,6 @@ public class PedidosServiceImpl implements IPedidosService{
 
     @Autowired
     private IPedidosDAO pedidosDAO;
-    @Autowired
-    private ICamionDAO camionDAO;
 
     @Override
     public List<Pedidos> findAll() {
@@ -51,12 +49,4 @@ public class PedidosServiceImpl implements IPedidosService{
         return ultimoNumeroPedido != null ? ultimoNumeroPedido : 99; // Empezar en 100
     }
 
-    @Override
-    public Pedidos actualizarEstadoEntregado(Long id, boolean entregado) {
-        Pedidos pedidoExistente = pedidosDAO.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("El pedido con ID " + id + " no existe"));
-
-        pedidoExistente.setEntregado(entregado);
-        return pedidosDAO.save(pedidoExistente);
-    }
 }

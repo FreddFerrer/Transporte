@@ -70,7 +70,6 @@ public class Pedidos {
 
     public void agregarEstado(EstadoPedidos estado) {
         estados.add(estado);
-        estado.setFecha(new Date());
         estado.setPedido(this);
     }
 

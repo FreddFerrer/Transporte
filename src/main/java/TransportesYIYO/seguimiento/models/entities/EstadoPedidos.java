@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Entity
@@ -24,8 +26,15 @@ public class EstadoPedidos {
     private String estado;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "America/Argentina/Buenos_Aires")
     private Date fecha;
+
+    @PrePersist
+    public void prePersist() {
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"));
+        fecha = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+    }
 
     //GETTER Y SETTERS
 

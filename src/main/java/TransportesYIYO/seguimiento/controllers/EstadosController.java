@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -16,19 +17,32 @@ import java.util.*;
 
 @RestController
 @RequestMapping("api")
+@PreAuthorize("hasRole('ADMIN')")
+@CrossOrigin(origins = "http://localhost:3000")
 public class EstadosController {
 
     @Autowired
     private IPedidosService pedidosService;
 
     @GetMapping("/pedidos/{id}/estados")
-    public ResponseEntity<List<EstadoPedidos>> obtenerEstadosPedido(@PathVariable Long id) {
-        Pedidos pedido = pedidosService.getPedidosById(id);
+    public ResponseEntity<?> obtenerEstadosPedido(@PathVariable Long id) {
+        Pedidos pedido;
+        Map<String, Object> response = new HashMap<>();
+
+        pedido = pedidosService.getPedidosById(id);
 
         List<EstadoPedidos> estados = pedido.getEstados();
+
         estados.sort(Comparator.comparing(EstadoPedidos::getFecha));
 
-        return ResponseEntity.ok(estados);
+        if (pedido == null) {
+            response.put("mensaje", "El pedido id: " + id + " no existe en la base de datos");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(estados, HttpStatus.OK);
+
+
     }
 
     @PostMapping("/pedidos/{id}/estados")

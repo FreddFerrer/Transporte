@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api")
+@PreAuthorize("hasRole('ADMIN')")
 @CrossOrigin(origins = "http://localhost:3000")
 public class CamionController {
 
